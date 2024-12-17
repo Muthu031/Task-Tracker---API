@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socket.IO Test</title>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <h1>Socket.IO Chat</h1>
+    <p id="status">Connecting...</p>
+ 
+    <!-- Input field and send button for message -->
+    <input type="text" id="messageInput" placeholder="Type your message here" />
+    <button id="sendButton">Send</button>
+ 
+    <!-- Message display area -->
+    <div id="messages"></div>
+ 
+    <script>
+        // Connect to the Socket.IO server
+        const socket = io("https://auction-dev.iynthinai.com");
+ 
+        // Display connection status
+        socket.on("connect", () => {
+            document.getElementById("status").innerText = "Connected to server!";
+            console.log("Connected to server, socket ID:", socket.id);
+        });
+ 
+        socket.on("disconnect", () => {
+            document.getElementById("status").innerText = "Disconnected from server.";
+            console.log("Disconnected from server");
+        });
+ 
+        // Listen for incoming messages from the server
+        socket.on("message", (data) => {
+            console.log("Message from server:", data);
+            const messageElement = document.createElement("p");
+            messageElement.innerText = "Server: " + data;
+            document.getElementById("messages").appendChild(messageElement);
+        });
+ 
+        // Send message to server when button is clicked
+        document.getElementById("sendButton").addEventListener("click", () => {
+            const message = document.getElementById("messageInput").value;
+            if (message.trim() !== "") {
+                socket.emit("message", message); // Send the message to the server
+                document.getElementById("messageInput").value = ""; // Clear the input field
+ 
+                // Display sent message on the page
+                const messageElement = document.createElement("p");
+                messageElement.innerText = "You: " + message;
+                document.getElementById("messages").appendChild(messageElement);
+            }
+        });
+    </script>
+</body>
+</html>
