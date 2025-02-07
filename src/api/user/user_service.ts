@@ -12,7 +12,7 @@ export async function addTaskDetail(request: AddTask) {
     } catch (err) {
         console.log("---------Error in Function addTaskDetail --------------",err)
         throw err;
-    }
+    } 
 };
 
 export async function updateTaskInDatabase(req:any) {

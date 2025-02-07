@@ -3,7 +3,9 @@ import { validateToken } from "./auth/auth_service";
 
 const endpoints = [
     "auth",
-    "user"
+    "user",
+    "task-cal",
+    
 ];
 
 
